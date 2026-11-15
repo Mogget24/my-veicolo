@@ -1,10 +1,13 @@
-import { beforeAll, describe, expect, it } from 'vitest'
-import { ADMIN_EMAIL, createTestApp, json, sessionCookie } from './helpers'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { ADMIN_EMAIL, SECOND_ADMIN_EMAIL, createTestApp, json, sessionCookie } from './helpers'
 
 describe('auth', () => {
   let t: Awaited<ReturnType<typeof createTestApp>>
   beforeAll(async () => {
     t = await createTestApp()
+  })
+  afterAll(async () => {
+    await t.close()
   })
 
   it('a new user gets role "user" and no vehicles', async () => {
@@ -37,7 +40,7 @@ describe('auth', () => {
   })
 
   it('rejects sign-up when SIGNUP_ENABLED=false', async () => {
-    const closed = await createTestApp({ signUpEnabled: false })
+    const closed = await createTestApp({ signUpEnabled: false }, t.db)
     const res = await closed.request('/api/auth/sign-up/email', {
       body: { email: 'nuovo@test.it', password: 'password-sicura-1', name: 'nuovo' },
     })
@@ -45,8 +48,8 @@ describe('auth', () => {
   })
 
   it('a banned user loses access and cannot sign in again', async () => {
-    const b = await createTestApp()
-    const admin = await b.signUp(ADMIN_EMAIL)
+    const b = t
+    const admin = await b.signUp(SECOND_ADMIN_EMAIL)
     const cookie = await b.signUp('cattivo@test.it')
     const me = await json(await b.request('/api/me', { cookie }))
 

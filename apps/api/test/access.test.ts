@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { ADMIN_EMAIL, createTestApp, createVehicle, json } from './helpers'
 
 /** Cross-user access: every vehicle-scoped route must hide other users' vehicles. */
@@ -19,6 +19,7 @@ describe('vehicle access', () => {
     sharedCar = await createVehicle(t.db, 'BB222BB', [annaId, brunoId])
     unassignedCar = await createVehicle(t.db, 'CC333CC')
   })
+  afterAll(() => t.close())
 
   const plates = async (cookie: string) =>
     (await json<{ vehicles: { plate: string }[] }>(await t.request('/api/vehicles', { cookie }))).vehicles.map((v) => v.plate)

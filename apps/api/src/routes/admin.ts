@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { asc, count, eq, sql } from 'drizzle-orm'
-import { pushSubscriptions, user, vehicleAssignments } from '@my-veicolo/db'
+import { user } from '@my-veicolo/db/schema/auth'
+import { pushSubscriptions, vehicleAssignments } from '@my-veicolo/db/schema/app'
 import type { AppEnv } from '../context'
 import { adminOnly, authed } from '../middleware'
 

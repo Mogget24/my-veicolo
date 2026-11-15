@@ -1,4 +1,4 @@
-import type { Db } from '@my-veicolo/db'
+import type { Db } from '@my-veicolo/db/client'
 import type { Auth, SessionData } from './auth'
 
 export type Deps = { db: Db; auth: Auth }

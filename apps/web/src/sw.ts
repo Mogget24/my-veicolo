@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 import { cleanupOutdatedCaches, createHandlerBoundToURL, precacheAndRoute, type PrecacheEntry } from 'workbox-precaching'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
-import type { PushPayload } from '@my-veicolo/shared'
+import type { PushPayload } from '@my-veicolo/shared/push'
 
 declare const self: ServiceWorkerGlobalScope & { __WB_MANIFEST: Array<PrecacheEntry | string> }
 

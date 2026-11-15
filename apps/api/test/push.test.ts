@@ -1,7 +1,7 @@
-import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import { afterEach, afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import { eq } from 'drizzle-orm'
 import { generateVAPIDKeys } from 'web-push'
-import { pushSubscriptions } from '@my-veicolo/db'
+import { pushSubscriptions } from '@my-veicolo/db/schema/app'
 import { createTestApp, json } from './helpers'
 
 const subscription = (endpoint: string) => ({
@@ -20,6 +20,7 @@ describe('push', () => {
     anna = await t.signUp('anna@test.it')
     bruno = await t.signUp('bruno@test.it')
   })
+  afterAll(() => t.close())
   afterEach(() => vi.unstubAllEnvs())
 
   const owners = async () =>

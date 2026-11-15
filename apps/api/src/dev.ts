@@ -3,7 +3,7 @@
 // Set DEV_DATABASE=neon to use DATABASE_URL instead.
 import { mkdirSync } from 'node:fs'
 import { serve } from '@hono/node-server'
-import { createNeonDb } from '@my-veicolo/db'
+import { createNeonDb } from '@my-veicolo/db/client'
 import { createPgliteDb } from '@my-veicolo/db/pglite'
 import { authOptionsFromEnv, createAuth } from './auth'
 import { createApp } from './app'

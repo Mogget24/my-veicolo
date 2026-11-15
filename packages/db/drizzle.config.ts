@@ -7,7 +7,7 @@ try {
 
 export default defineConfig({
   dialect: 'postgresql',
-  schema: './src/schema/index.ts',
+  schema: './src/schema/*.ts',
   out: './migrations',
   // Migrations need a direct (non-pooled) connection.
   dbCredentials: { url: process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL ?? '' },

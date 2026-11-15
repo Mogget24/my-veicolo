@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { count, eq } from 'drizzle-orm'
-import { vehicleAssignments } from '@my-veicolo/db'
+import { vehicleAssignments } from '@my-veicolo/db/schema/app'
 import type { AppEnv } from '../context'
 import { authed } from '../middleware'
 

@@ -1,7 +1,8 @@
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin } from 'better-auth/plugins'
-import { schema, type Db } from '@my-veicolo/db'
+import * as authSchema from '@my-veicolo/db/schema/auth'
+import type { Db } from '@my-veicolo/db/client'
 import { requireEnv } from './env'
 
 export type AuthOptions = {
@@ -20,7 +21,7 @@ export function createAuth(db: Db, opts: AuthOptions) {
     basePath: '/api/auth',
     secret: opts.secret,
     trustedOrigins: [opts.baseURL],
-    database: drizzleAdapter(db, { provider: 'pg', schema }),
+    database: drizzleAdapter(db, { provider: 'pg', schema: authSchema }),
     emailAndPassword: {
       enabled: true,
       disableSignUp: !opts.signUpEnabled,

@@ -1,18 +1,24 @@
-import { createPgliteDb } from '@my-veicolo/db/pglite'
-import { vehicleAssignments, vehicles, type Db } from '@my-veicolo/db'
+import { createPgliteDb, type PgliteDb } from '@my-veicolo/db/pglite'
+import { vehicleAssignments, vehicles } from '@my-veicolo/db/schema/app'
+import type { Db } from '@my-veicolo/db/client'
 import { createAuth, type AuthOptions } from '../src/auth'
 import { createApp } from '../src/app'
 
 export const ORIGIN = 'http://localhost:5173'
 export const ADMIN_EMAIL = 'admin@test.it'
+export const SECOND_ADMIN_EMAIL = 'capo@test.it'
 
-/** A fresh app on an in-memory PGlite database with all migrations applied. */
-export async function createTestApp(overrides: Partial<AuthOptions> = {}) {
-  const db = await createPgliteDb()
+/**
+ * An app on an in-memory PGlite database with all migrations applied.
+ * Pass `db` to build another app (e.g. different auth options) on the same database:
+ * each PGlite instance is memory-hungry, so keep one per test file and `close()` it in afterAll.
+ */
+export async function createTestApp(overrides: Partial<AuthOptions> = {}, existingDb?: PgliteDb) {
+  const db = existingDb ?? (await createPgliteDb())
   const auth = createAuth(db, {
     baseURL: ORIGIN,
     secret: 'test-secret-test-secret-test-secret-123',
-    adminEmails: [ADMIN_EMAIL],
+    adminEmails: [ADMIN_EMAIL, SECOND_ADMIN_EMAIL],
     signUpEnabled: true,
     rateLimit: false,
     ...overrides,
@@ -38,7 +44,9 @@ export async function createTestApp(overrides: Partial<AuthOptions> = {}) {
     return sessionCookie(res)
   }
 
-  return { app, db, auth, request, signUp }
+  const close = () => db.$client.close()
+
+  return { app, db, auth, request, signUp, close }
 }
 
 export function sessionCookie(res: Response): string {

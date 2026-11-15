@@ -1,5 +1,6 @@
 import { and, eq } from 'drizzle-orm'
-import { vehicleAssignments, type Db } from '@my-veicolo/db'
+import { vehicleAssignments } from '@my-veicolo/db/schema/app'
+import type { Db } from '@my-veicolo/db/client'
 import type { SessionUser } from './context'
 
 export const isAdmin = (user: Pick<SessionUser, 'role'>) => user.role === 'admin'

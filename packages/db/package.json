@@ -4,8 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./pglite": "./src/pglite.ts"
+    "./client": "./src/client.ts",
+    "./pglite": "./src/pglite.ts",
+    "./schema/*": "./src/schema/*.ts"
   },
   "scripts": {
     "db:generate": "drizzle-kit generate",

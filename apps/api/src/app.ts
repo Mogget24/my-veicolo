@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
-import { createNeonDb } from '@my-veicolo/db'
+import { createNeonDb } from '@my-veicolo/db/client'
 import { authOptionsFromEnv, createAuth } from './auth'
 import type { AppEnv, Deps } from './context'
 import { requireEnv } from './env'

@@ -3,7 +3,7 @@ import { Link, createFileRoute, redirect, useNavigate } from '@tanstack/react-ro
 import { useForm } from '@tanstack/react-form'
 import { useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
-import { safeRedirect, signInSchema } from '@my-veicolo/shared'
+import { safeRedirect, signInSchema } from '@my-veicolo/shared/auth'
 import { AuthCard, FormError } from '../components/AuthCard'
 import { Button } from '../components/Button'
 import { TextField } from '../components/TextField'

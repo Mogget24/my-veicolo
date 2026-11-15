@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { asc, eq } from 'drizzle-orm'
 import { z } from 'zod'
-import { vehicleAssignments, vehicles } from '@my-veicolo/db'
+import { vehicleAssignments, vehicles } from '@my-veicolo/db/schema/app'
 import type { AppEnv } from '../context'
 import { authed } from '../middleware'
 import { canAccessVehicle, isAdmin } from '../access'
