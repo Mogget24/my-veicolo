@@ -19,7 +19,9 @@ function PushTest() {
   const addLog = (msg: string) => setLog((l) => [`${new Date().toLocaleTimeString('it-IT')} — ${msg}`, ...l])
 
   useEffect(() => {
-    getCurrentSubscription().then(setSubscription).catch(() => {})
+    getCurrentSubscription()
+      .then(setSubscription)
+      .catch((err) => addLog(`Errore: ${err instanceof Error ? err.message : String(err)}`))
   }, [])
 
   async function run(action: () => Promise<void>) {
@@ -66,7 +68,7 @@ function PushTest() {
           disabled={busy || !supported}
           onClick={() =>
             run(async () => {
-              const sub = await subscribeToPush()
+              const sub = await subscribeToPush(addLog)
               setSubscription(sub)
               addLog('Notifiche attivate')
             })

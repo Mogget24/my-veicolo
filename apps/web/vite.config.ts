@@ -29,7 +29,9 @@ export default defineConfig({
         background_color: '#ffffff',
       },
       injectManifest: {
-        globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest}'],
+        // No webmanifest here: the plugin adds it itself, and a duplicate URL with a
+        // different revision makes Workbox throw, so the SW never installs.
+        globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
       },
       devOptions: { enabled: true, type: 'module', navigateFallback: 'index.html' },
     }),

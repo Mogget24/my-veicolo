@@ -17,29 +17,58 @@ function urlBase64ToUint8Array(base64: string): Uint8Array<ArrayBuffer> {
   return Uint8Array.from(raw, (c) => c.charCodeAt(0))
 }
 
+function withTimeout<T>(promise: Promise<T>, ms: number, message: string): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(message)), ms)
+    promise.then(
+      (v) => (clearTimeout(timer), resolve(v)),
+      (e) => (clearTimeout(timer), reject(e)),
+    )
+  })
+}
+
+/** Resolves with the active SW registration, or fails instead of hanging forever. */
+function serviceWorkerReady(): Promise<ServiceWorkerRegistration> {
+  return withTimeout(
+    navigator.serviceWorker.ready,
+    10_000,
+    'Il service worker non si è attivato. Ricarica la pagina e riprova.',
+  )
+}
+
 export async function getCurrentSubscription(): Promise<PushSubscription | null> {
   if (!isPushSupported()) return null
-  const reg = await navigator.serviceWorker.ready
+  const reg = await serviceWorkerReady()
   return reg.pushManager.getSubscription()
 }
 
-/** Must be called from a user gesture (required on iOS). */
-export async function subscribeToPush(): Promise<PushSubscription> {
+/** Must be called from a user gesture (required on iOS). `onStep` reports progress for the UI. */
+export async function subscribeToPush(onStep: (msg: string) => void = () => {}): Promise<PushSubscription> {
+  if (Notification.permission === 'default') {
+    onStep('Richiesta del permesso… (se non compare, controlla l’icona 🔔 nella barra degli indirizzi)')
+  }
   const permission = await Notification.requestPermission()
   if (permission !== 'granted') throw new Error('Permesso per le notifiche negato')
 
-  const reg = await navigator.serviceWorker.ready
+  onStep('Attesa del service worker…')
+  const reg = await serviceWorkerReady()
   const existing = await reg.pushManager.getSubscription()
   if (existing) return existing
 
-  const res = await api.push['public-key'].$get()
+  onStep('Richiesta della chiave al server…')
+  const res = await withTimeout(api.push['public-key'].$get(), 10_000, 'Il server non risponde')
   if (!res.ok) throw new Error('Impossibile ottenere la chiave pubblica dal server')
   const { publicKey } = await res.json()
 
-  return reg.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(publicKey),
-  })
+  onStep('Iscrizione al servizio push…')
+  return withTimeout(
+    reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicKey),
+    }),
+    15_000,
+    'Il servizio push del browser non risponde',
+  )
 }
 
 export async function sendTestPush(subscription: PushSubscription, delaySeconds = 0) {
