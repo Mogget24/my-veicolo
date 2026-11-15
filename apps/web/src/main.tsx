@@ -5,6 +5,9 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import './styles.css'
 
+// iOS Safari only applies :active styles when a touch listener exists on the page.
+document.addEventListener('touchstart', () => {}, { passive: true })
+
 const queryClient = new QueryClient()
 const router = createRouter({ routeTree, context: { queryClient } })
 

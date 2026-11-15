@@ -1,6 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../lib/api'
+import { buttonClass } from '../components/Button'
 
 export const Route = createFileRoute('/')({ component: Home })
 
@@ -23,7 +24,7 @@ function Home() {
       <p className="text-sm">
         Stato API: {health.isPending ? 'verifica…' : health.isError ? '❌ non raggiungibile' : '✅ online'}
       </p>
-      <Link to="/push-test" className="inline-block rounded-lg bg-teal-700 px-4 py-2 font-medium text-white">
+      <Link to="/push-test" className={buttonClass('primary')}>
         Prova le notifiche
       </Link>
     </div>

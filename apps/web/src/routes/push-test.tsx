@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
+import { Button } from '../components/Button'
 import { getCurrentSubscription, isIOS, isPushSupported, isStandalone, sendTestPush, subscribeToPush } from '../lib/push'
 
 export const Route = createFileRoute('/push-test')({ component: PushTest })
@@ -61,9 +62,8 @@ function PushTest() {
       )}
 
       <div className="flex flex-col gap-3">
-        <button
+        <Button
           disabled={busy || !supported}
-          className="rounded-lg bg-teal-700 px-4 py-3 font-medium text-white disabled:opacity-50"
           onClick={() =>
             run(async () => {
               const sub = await subscribeToPush()
@@ -72,11 +72,11 @@ function PushTest() {
             })
           }
         >
-          Attiva notifiche
-        </button>
-        <button
+          {subscription ? 'Notifiche attive ✓' : 'Attiva notifiche'}
+        </Button>
+        <Button
+          variant="outline"
           disabled={busy || !subscription}
-          className="rounded-lg border border-teal-700 px-4 py-3 font-medium text-teal-700 disabled:opacity-50 dark:text-teal-400"
           onClick={() =>
             run(async () => {
               const res = await sendTestPush(subscription!)
@@ -85,10 +85,10 @@ function PushTest() {
           }
         >
           Invia notifica di prova
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="outline"
           disabled={busy || !subscription}
-          className="rounded-lg border border-teal-700 px-4 py-3 font-medium text-teal-700 disabled:opacity-50 dark:text-teal-400"
           onClick={() =>
             run(async () => {
               addLog("Invio tra 10 secondi: chiudi l'app ora")
@@ -98,7 +98,14 @@ function PushTest() {
           }
         >
           Invia tra 10 secondi (app chiusa)
-        </button>
+        </Button>
+        {!subscription && (
+          <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+            {supported
+              ? "Tocca prima “Attiva notifiche” per abilitare l'invio di prova."
+              : 'Questo browser non supporta le notifiche push.'}
+          </p>
+        )}
       </div>
 
       {log.length > 0 && (
