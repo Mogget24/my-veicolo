@@ -16,7 +16,9 @@ packages/config Shared tsconfig
 
 ## Setup
 
-Requires Node ≥ 22 and pnpm 10 (`npm i -g pnpm@10`).
+Requires Node ≥ 22 and pnpm 11 (`npm i -g pnpm@11`; the exact version is pinned in `packageManager`).
+
+Dependency versions live in one place: the `catalog` in `pnpm-workspace.yaml`. Packages reference them with `"catalog:"` and internal packages with `"workspace:*"`. To upgrade, change the catalog and run `pnpm install`. pnpm 11 refuses packages published less than a day ago (`minimumReleaseAge`), as a supply-chain safeguard.
 
 ```sh
 pnpm install
@@ -30,7 +32,7 @@ Other tasks: `pnpm build`, `pnpm test`, `pnpm typecheck`.
 ## Deploy (Vercel)
 
 1. Import the repo in Vercel, set **Root Directory** to `apps/web` (framework: Vite; keep "Include files outside the root directory" on).
-2. Add env vars `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`.
+2. Add env vars `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`, and `ENABLE_EXPERIMENTAL_COREPACK=1` (makes Vercel use the pnpm version from `packageManager`).
 3. Deploy. `/api/*` is rewritten to the Hono function, everything else to the SPA (see `apps/web/vercel.json`).
 
 ## Testing push

@@ -2,8 +2,10 @@
   "name": "my-veicolo",
   "private": true,
   "version": "0.1.0",
-  "packageManager": "pnpm@10.34.0",
-  "engines": { "node": ">=22" },
+  "packageManager": "pnpm@11.28.12",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
@@ -12,7 +14,7 @@
     "vapid": "pnpm --filter @my-veicolo/api vapid"
   },
   "devDependencies": {
-    "turbo": "^2.11.11",
-    "typescript": "^7.0.2"
+    "turbo": "catalog:",
+    "typescript": "catalog:"
   }
 }

@@ -1,12 +1,12 @@
 import { Hono } from 'hono'
 import { validate } from '../validate'
 import { z } from 'zod'
-import webpush from 'web-push'
+import { sendNotification, setVapidDetails, WebPushError } from 'web-push'
 import { pushSubscriptionSchema, type PushPayload } from '@my-veicolo/shared'
 import { requireEnv } from '../env'
 
 function configureWebPush() {
-  webpush.setVapidDetails(
+  setVapidDetails(
     requireEnv('VAPID_SUBJECT'),
     requireEnv('VAPID_PUBLIC_KEY'),
     requireEnv('VAPID_PRIVATE_KEY'),
@@ -33,10 +33,10 @@ export const pushRoutes = new Hono()
         tag: 'test',
       }
       try {
-        const res = await webpush.sendNotification(subscription, JSON.stringify(payload), { TTL: 60 })
+        const res = await sendNotification(subscription, JSON.stringify(payload), { TTL: 60 })
         return c.json({ ok: true, status: res.statusCode })
       } catch (err) {
-        const status = err instanceof webpush.WebPushError ? err.statusCode : 500
+        const status = err instanceof WebPushError ? err.statusCode : 500
         return c.json({ ok: false, status, error: String(err) }, 502)
       }
     },
