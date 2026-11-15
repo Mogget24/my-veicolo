@@ -81,6 +81,10 @@ export async function sendTestPush(subscription: PushSubscription, delaySeconds 
       delaySeconds,
     },
   })
-  if (!res.ok) throw new Error(`Invio fallito (HTTP ${res.status})`)
+  if (!res.ok) {
+    const body = (await res.json().catch(() => null)) as { error?: unknown } | null
+    const detail = typeof body?.error === 'string' ? body.error : `HTTP ${res.status}`
+    throw new Error(`Invio fallito: ${detail}`)
+  }
   return res.json()
 }
