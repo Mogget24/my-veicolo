@@ -5,6 +5,7 @@ import { sendNotification, setVapidDetails, WebPushError } from 'web-push'
 import { pushSubscriptions } from '@my-veicolo/db/schema/app'
 import type { Db } from '@my-veicolo/db/client'
 import { pushSubscriptionSchema, type PushPayload } from '@my-veicolo/shared/push'
+import { APP_NAME } from '@my-veicolo/shared/brand'
 import type { AppEnv } from '../context'
 import { authed } from '../middleware'
 import { requireEnv } from '../env'
@@ -101,7 +102,7 @@ export const pushRoutes = new Hono<AppEnv>()
       if (delaySeconds > 0) await new Promise((r) => setTimeout(r, delaySeconds * 1000))
 
       const result = await sendToUser(c.var.deps.db, c.var.user.id, {
-        title: 'my-veicolo',
+        title: APP_NAME,
         body: 'Notifica di prova: le notifiche funzionano 🎉',
         url: '/notifiche',
         tag: 'test',

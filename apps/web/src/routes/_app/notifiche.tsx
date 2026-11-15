@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { Button } from '../../components/Button'
+import { APP_NAME } from '@my-veicolo/shared/brand'
 import { getCurrentSubscription, isIOS, isPushSupported, isStandalone, sendTestPush, subscribeToPush } from '../../lib/push'
 
 export const Route = createFileRoute('/_app/notifiche')({ component: Notifications })
@@ -66,7 +67,7 @@ function Notifications() {
       {ios && !standalone && (
         <div className="rounded-xl border border-amber-700 bg-amber-950 p-4 text-sm text-amber-200">
           Su iPhone le notifiche funzionano solo se l'app è installata: in Safari tocca <strong>Condividi</strong> →{' '}
-          <strong>Aggiungi alla schermata Home</strong>, poi apri my-veicolo dall'icona.
+          <strong>Aggiungi alla schermata Home</strong>, poi apri l'app dall'icona «{APP_NAME}».
         </div>
       )}
 

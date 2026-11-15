@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, Outlet, createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { authClient, sessionQuery } from '../lib/auth'
+import { APP_NAME } from '@my-veicolo/shared/brand'
 import { syncSubscription, unsubscribeThisDevice } from '../lib/push'
 
 /** Pathless layout: every route below it requires a session. */
@@ -43,7 +44,7 @@ function AppLayout() {
         <div className="flex items-center justify-between px-4 py-3">
           <Link to="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight text-silver-200">
             <img src="/icon.svg" alt="" className="size-8 rounded-lg" />
-            my-veicolo
+            {APP_NAME}
           </Link>
           <button
             onClick={signOut}

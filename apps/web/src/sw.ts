@@ -2,6 +2,7 @@
 import { cleanupOutdatedCaches, createHandlerBoundToURL, precacheAndRoute, type PrecacheEntry } from 'workbox-precaching'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
 import type { PushPayload } from '@my-veicolo/shared/push'
+import { APP_NAME } from '@my-veicolo/shared/brand'
 
 declare const self: ServiceWorkerGlobalScope & { __WB_MANIFEST: Array<PrecacheEntry | string> }
 
@@ -19,7 +20,7 @@ self.addEventListener('message', (event) => {
 
 // --- Push --------------------------------------------------------------------
 self.addEventListener('push', (event) => {
-  let payload: PushPayload = { title: 'my-veicolo', body: 'Hai una nuova notifica', url: '/' }
+  let payload: PushPayload = { title: APP_NAME, body: 'Hai una nuova notifica', url: '/' }
   try {
     if (event.data) payload = { ...payload, ...(event.data.json() as Partial<PushPayload>) }
   } catch {

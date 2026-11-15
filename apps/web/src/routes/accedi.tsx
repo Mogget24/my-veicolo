@@ -39,7 +39,7 @@ function SignIn() {
   return (
     <AuthCard
       title="Accedi"
-      subtitle="Bentornato su my-veicolo"
+      subtitle="Bentornato!"
       footer={
         <>
           Non hai un account?{' '}
