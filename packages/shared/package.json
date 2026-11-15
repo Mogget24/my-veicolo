@@ -1,0 +1,17 @@
+{
+  "name": "@my-veicolo/shared",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@my-veicolo/config": "workspace:*",
+    "typescript": "^7.0.2"
+  }
+}
