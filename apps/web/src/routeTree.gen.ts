@@ -9,68 +9,152 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as PushTestRouteImport } from './routes/push-test'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as AccediRouteImport } from './routes/accedi'
+import { Route as RegistratiRouteImport } from './routes/registrati'
+import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AppAdminRouteImport } from './routes/_app/admin'
+import { Route as AppNotificheRouteImport } from './routes/_app/notifiche'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PushTestRoute = PushTestRouteImport.update({
-  id: '/push-test',
-  path: '/push-test',
+const AccediRoute = AccediRouteImport.update({
+  id: '/accedi',
+  path: '/accedi',
   getParentRoute: () => rootRouteImport,
+} as any)
+const RegistratiRoute = RegistratiRouteImport.update({
+  id: '/registrati',
+  path: '/registrati',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificheRoute = AppNotificheRouteImport.update({
+  id: '/notifiche',
+  path: '/notifiche',
+  getParentRoute: () => AppRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/push-test': typeof PushTestRoute
+  '/': typeof AppIndexRoute
+  '/accedi': typeof AccediRoute
+  '/registrati': typeof RegistratiRoute
+  '/admin': typeof AppAdminRoute
+  '/notifiche': typeof AppNotificheRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/push-test': typeof PushTestRoute
+  '/accedi': typeof AccediRoute
+  '/registrati': typeof RegistratiRoute
+  '/admin': typeof AppAdminRoute
+  '/notifiche': typeof AppNotificheRoute
+  '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/push-test': typeof PushTestRoute
+  '/_app': typeof AppRouteWithChildren
+  '/accedi': typeof AccediRoute
+  '/registrati': typeof RegistratiRoute
+  '/_app/admin': typeof AppAdminRoute
+  '/_app/notifiche': typeof AppNotificheRoute
+  '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/push-test'
+  fullPaths: '/' | '/accedi' | '/registrati' | '/admin' | '/notifiche'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/push-test'
-  id: '__root__' | '/' | '/push-test'
+  to: '/accedi' | '/registrati' | '/admin' | '/notifiche' | '/'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/accedi'
+    | '/registrati'
+    | '/_app/admin'
+    | '/_app/notifiche'
+    | '/_app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  PushTestRoute: typeof PushTestRoute
+  AppRoute: typeof AppRouteWithChildren
+  AccediRoute: typeof AccediRoute
+  RegistratiRoute: typeof RegistratiRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
+    '/_app': {
+      id: '/_app'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/push-test': {
-      id: '/push-test'
-      path: '/push-test'
-      fullPath: '/push-test'
-      preLoaderRoute: typeof PushTestRouteImport
+    '/accedi': {
+      id: '/accedi'
+      path: '/accedi'
+      fullPath: '/accedi'
+      preLoaderRoute: typeof AccediRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/registrati': {
+      id: '/registrati'
+      path: '/registrati'
+      fullPath: '/registrati'
+      preLoaderRoute: typeof RegistratiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/': {
+      id: '/_app/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/admin': {
+      id: '/_app/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/notifiche': {
+      id: '/_app/notifiche'
+      path: '/notifiche'
+      fullPath: '/notifiche'
+      preLoaderRoute: typeof AppNotificheRouteImport
+      parentRoute: typeof AppRoute
     }
   }
 }
 
+interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
+  AppNotificheRoute: typeof AppNotificheRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
+  AppNotificheRoute: AppNotificheRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  PushTestRoute: PushTestRoute,
+  AppRoute: AppRouteWithChildren,
+  AccediRoute: AccediRoute,
+  RegistratiRoute: RegistratiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

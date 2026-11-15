@@ -18,6 +18,9 @@
   },
   "dependencies": {
     "@hono/zod-validator": "catalog:",
+    "@neondatabase/serverless": "catalog:",
+    "better-auth": "catalog:",
+    "drizzle-orm": "catalog:",
     "hono": "catalog:",
     "web-push": "catalog:",
     "zod": "catalog:"
@@ -25,6 +28,7 @@
   "devDependencies": {
     "@hono/node-server": "catalog:",
     "@my-veicolo/config": "workspace:*",
+    "@my-veicolo/db": "workspace:*",
     "@my-veicolo/shared": "workspace:*",
     "@types/node": "catalog:",
     "@types/web-push": "catalog:",

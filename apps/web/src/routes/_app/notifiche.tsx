@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { Button } from '../components/Button'
-import { getCurrentSubscription, isIOS, isPushSupported, isStandalone, sendTestPush, subscribeToPush } from '../lib/push'
+import { Button } from '../../components/Button'
+import { getCurrentSubscription, isIOS, isPushSupported, isStandalone, sendTestPush, subscribeToPush } from '../../lib/push'
 
-export const Route = createFileRoute('/push-test')({ component: PushTest })
+export const Route = createFileRoute('/_app/notifiche')({ component: Notifications })
 
 const currentPermission = () => ('Notification' in window ? Notification.permission : 'unsupported')
+const errorText = (err: unknown) => (err instanceof Error ? err.message : String(err))
 
-function PushTest() {
+function Notifications() {
   const [subscription, setSubscription] = useState<PushSubscription | null>(null)
   const [permission, setPermission] = useState<string>(currentPermission)
   const [log, setLog] = useState<string[]>([])
@@ -21,7 +22,7 @@ function PushTest() {
   useEffect(() => {
     getCurrentSubscription()
       .then(setSubscription)
-      .catch((err) => addLog(`Errore: ${err instanceof Error ? err.message : String(err)}`))
+      .catch((err) => addLog(`Errore: ${errorText(err)}`))
   }, [])
 
   async function run(action: () => Promise<void>) {
@@ -29,19 +30,25 @@ function PushTest() {
     try {
       await action()
     } catch (err) {
-      addLog(`Errore: ${err instanceof Error ? err.message : String(err)}`)
+      addLog(`Errore: ${errorText(err)}`)
     } finally {
       setBusy(false)
       setPermission(currentPermission())
     }
   }
 
+  const sent = (r: { sent: number; removed: number; failed: number }) =>
+    `Inviata a ${r.sent} dispositiv${r.sent === 1 ? 'o' : 'i'}` + (r.failed ? ` · ${r.failed} non riuscit${r.failed === 1 ? 'o' : 'i'}` : '')
+
   const permissionLabel =
     permission === 'granted' ? '✅ concesso' : permission === 'denied' ? '❌ negato' : permission === 'unsupported' ? '—' : 'da chiedere'
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Prova notifiche</h1>
+      <div>
+        <h1 className="text-2xl font-bold">Notifiche</h1>
+        <p className="text-sm text-silver-400">Ricevi i promemoria delle scadenze su questo dispositivo.</p>
+      </div>
 
       <dl className="grid grid-cols-2 gap-2 rounded-xl border border-line bg-surface p-4 text-sm [&_dt]:text-silver-400">
         <dt>Dispositivo</dt>
@@ -52,8 +59,8 @@ function PushTest() {
         <dd>{supported ? '✅ sì' : '❌ no'}</dd>
         <dt>Permesso</dt>
         <dd>{permissionLabel}</dd>
-        <dt>Iscrizione</dt>
-        <dd>{subscription ? '✅ attiva' : '—'}</dd>
+        <dt>Su questo dispositivo</dt>
+        <dd>{subscription ? '✅ attive' : '—'}</dd>
       </dl>
 
       {ios && !standalone && (
@@ -68,9 +75,8 @@ function PushTest() {
           disabled={busy || !supported}
           onClick={() =>
             run(async () => {
-              const sub = await subscribeToPush(addLog)
-              setSubscription(sub)
-              addLog('Notifiche attivate')
+              setSubscription(await subscribeToPush(addLog))
+              addLog('Notifiche attivate su questo dispositivo')
             })
           }
         >
@@ -79,12 +85,7 @@ function PushTest() {
         <Button
           variant="outline"
           disabled={busy || !subscription}
-          onClick={() =>
-            run(async () => {
-              const res = await sendTestPush(subscription!)
-              addLog(`Notifica inviata (stato ${res.status})`)
-            })
-          }
+          onClick={() => run(async () => addLog(sent(await sendTestPush())))}
         >
           Invia notifica di prova
         </Button>
@@ -94,8 +95,7 @@ function PushTest() {
           onClick={() =>
             run(async () => {
               addLog("Invio tra 10 secondi: chiudi l'app ora")
-              const res = await sendTestPush(subscription!, 10)
-              addLog(`Notifica inviata (stato ${res.status})`)
+              addLog(sent(await sendTestPush(10)))
             })
           }
         >

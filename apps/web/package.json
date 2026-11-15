@@ -13,15 +13,18 @@
   "dependencies": {
     "@my-veicolo/api": "workspace:*",
     "@my-veicolo/shared": "workspace:*",
+    "@tanstack/react-form": "catalog:",
     "@tanstack/react-query": "catalog:",
     "@tanstack/react-router": "catalog:",
+    "better-auth": "catalog:",
     "hono": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "workbox-core": "catalog:",
     "workbox-precaching": "catalog:",
     "workbox-routing": "catalog:",
-    "workbox-window": "catalog:"
+    "workbox-window": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@my-veicolo/config": "workspace:*",

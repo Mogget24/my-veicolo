@@ -342,16 +342,19 @@ Plate lookup sits behind `PlateProvider.lookup(plate) → VehicleData` so provid
 **Phase 0 — Spike (1–2 evenings)**
 - [x] Scaffold the Turborepo (`apps/web`, `apps/api`, `packages/shared`, `packages/config`); build, test, typecheck green.
 - [x] `vite-plugin-pwa` custom SW (precache, push, notification click → deep link, update prompt) + `/push-test` page.
-- [ ] Deploy to Vercel (root `apps/web`), set VAPID env vars, verify the `/api` function bundles `@my-veicolo/api`.
-- [ ] Verify Web Push on Android + installed iOS PWA from `*.vercel.app` (incl. "app closed" test).
-- [ ] Attach Neon via Marketplace.
+- [x] Deploy to Vercel (root `apps/web`), set VAPID env vars, verify the `/api` function bundles `@my-veicolo/api`.
+- [x] Verify Web Push on Android + installed iOS PWA from `*.vercel.app` (incl. "app closed" test).
+- [x] Attach Neon via Marketplace (Frankfurt; functions pinned to `fra1`).
 - [ ] Test 2–3 plate APIs on my plate; pick one, record decision here.
 - [ ] Pick file storage: confirm Vercel Blob private access on Hobby, otherwise Backblaze B2.
 
 **Phase 1 — Skeleton & auth**
-- `packages/db` schema + migrations, Better Auth (email+password, admin plugin, `ADMIN_EMAILS` bootstrap, rate limiting).
-- Sign-up / login / logout pages, "waiting for assignment" screen, `authed` + `admin` middlewares, `assertVehicleAccess` + tests.
-- Deploy; install on Android + iPhone.
+- [x] `packages/db`: Drizzle schema + first migration; Neon client (prod), PGlite (dev + tests).
+- [x] Better Auth: email+password, admin plugin, `ADMIN_EMAILS` bootstrap, DB-backed rate limiting, 60-day sliding sessions.
+- [x] API: `createApp(getDeps)`, `authed` (cookie cache bypassed so bans apply immediately) + `adminOnly`, `canAccessVehicle`; `/me`, `/vehicles`, `/admin/users`, per-user push subscriptions.
+- [x] Web: Accedi / Registrati (TanStack Form + shared Zod schemas, Italian errors), protected layout, waiting screen, admin users list, logout removes the device from push.
+- [x] Tests: 20 API tests incl. cross-user access; end-to-end browser run of the full flow.
+- [ ] Apply the migration to Neon, set `BETTER_AUTH_SECRET` + `ADMIN_EMAILS` on Vercel, deploy, sign up as admin.
 
 **Phase 2 — Admin panel & vehicles**
 - Users list (ban, promote, reset link).
