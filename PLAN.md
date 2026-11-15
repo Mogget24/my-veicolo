@@ -77,7 +77,7 @@ A small PWA to manage cars for me and a few people (family/friends). Anyone can 
 - Passkey login (Better Auth plugin).
 
 ### Nice to have
-- OCR of libretto / insurance policy to pre-fill the renewal form.
+- OCR of the insurance policy to pre-fill the renewal form (libretto OCR moved to Phase 3b).
 - Km-based reminders (tagliando every X km) from last logged km.
 - Export/backup to JSON/ZIP.
 
@@ -363,12 +363,16 @@ Plate lookup sits behind `PlateProvider.lookup(plate) → VehicleData` so provid
 - [x] Public "Reimposta password" page (one use, 24h, signs out all devices). Vehicle detail page for users.
 - [x] Session cookie cache disabled: bans, resets and sign-outs apply immediately in the UI too.
 - [x] 41 API tests; end-to-end browser run of the whole admin flow.
-- [ ] Choose the plate provider (Phase 0 comparison) and implement it behind `PlateProvider`.
+- [ ] ~~Choose a paid plate provider~~ **Postponed (2026-11-15):** specs come from the libretto (scan or by hand), deadlines from free official checks. The `PlateProvider` plumbing stays, switched off (`PLATE_PROVIDER` unset), in case typing specs gets tedious.
 
 **Phase 3 — Deadlines, renewals, push** *(MVP done here)*
-- Default deadline generation, status badges (rules in `packages/shared`).
-- Renew/snooze flow + `deadline_events` history.
-- Push subscription UI, service worker (actions + deep links), daily cron, notification log, "car assigned" push.
+- Deadlines (revisione, bollo, RCA, tagliando, gomme, custom) with default generation from the registration date, status badges (rules in `packages/shared`).
+- Renew/snooze flow + `deadline_events` history; "Ho fatto qualcosa" global entry point.
+- **Official checks without scraping:** "Verifica sul sito ufficiale" opens the official page (plate pre-filled where possible); the user solves any captcha there, then types or **pastes** the result back and the app extracts the date(s). No captcha relay, no server-side scraping (ToS, fragility).
+- Daily Vercel Cron + Web Push (stage-based thresholds 30/7/1/0 days, every 3 days overdue, dedupe log, banned users skipped), Android notification actions (renew / snooze).
+
+**Phase 3b — Libretto scan**
+- Photo of the libretto → **Tesseract.js on the device** (free, nothing leaves the phone) → parse by the harmonized field codes (A, B, D.1–D.3, E, P.1–P.3, V.9) → prefill the vehicle form for review. Owner fields (C.*) are never extracted. Language data self-hosted/cached by the service worker.
 
 **Phase 4 — Maintenance, documents, offline**
 - Maintenance log, document upload (presigned URLs), quick links.
