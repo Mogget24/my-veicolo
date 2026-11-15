@@ -9,8 +9,10 @@ import {
   primaryKey,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core'
+import { sql } from 'drizzle-orm'
 import { user } from './auth'
 
 const createdAt = () => timestamp('created_at', { withTimezone: true }).defaultNow().notNull()
@@ -115,4 +117,76 @@ export const passwordResetLinks = pgTable(
     createdAt: createdAt(),
   },
   (t) => [index('password_reset_links_user_id_idx').on(t.userId)],
+)
+
+/** One row per deadline of a vehicle. Standard types (all but `custom`) are unique per vehicle. */
+export const deadlines = pgTable(
+  'deadlines',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    vehicleId: uuid('vehicle_id')
+      .notNull()
+      .references(() => vehicles.id, { onDelete: 'cascade' }),
+    /** revisione | bollo | rca | tagliando | gomme | custom (see @my-veicolo/shared/deadline). */
+    type: text('type').notNull(),
+    label: text('label'),
+    /** null = not set yet (e.g. RCA until the user enters the policy expiry). */
+    dueDate: date('due_date'),
+    /** true while the date is an estimate (e.g. computed from the registration date). */
+    estimated: boolean('estimated').default(false).notNull(),
+    recurrenceMonths: integer('recurrence_months'),
+    snoozedUntil: date('snoozed_until'),
+    notes: text('notes'),
+    createdAt: createdAt(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (t) => [
+    index('deadlines_vehicle_id_idx').on(t.vehicleId),
+    uniqueIndex('deadlines_vehicle_type_unique').on(t.vehicleId, t.type).where(sql`${t.type} <> 'custom'`),
+  ],
+)
+
+/** History of renewals and snoozes ("today I renewed my insurance"). */
+export const deadlineEvents = pgTable(
+  'deadline_events',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    deadlineId: uuid('deadline_id')
+      .notNull()
+      .references(() => deadlines.id, { onDelete: 'cascade' }),
+    /** renewed | snoozed */
+    kind: text('kind').notNull(),
+    doneDate: date('done_date'),
+    previousDueDate: date('previous_due_date'),
+    newDueDate: date('new_due_date'),
+    costEur: numeric('cost_eur', { precision: 10, scale: 2, mode: 'number' }),
+    company: text('company'),
+    km: integer('km'),
+    notes: text('notes'),
+    doneBy: text('done_by').references(() => user.id, { onDelete: 'set null' }),
+    createdAt: createdAt(),
+  },
+  (t) => [index('deadline_events_deadline_id_idx').on(t.deadlineId)],
+)
+
+/**
+ * Reminders already sent. `stage` includes the due date (e.g. "2027-03-31:d7"), so a renewal
+ * that moves the due date starts a fresh cycle without deleting anything.
+ */
+export const notificationLog = pgTable(
+  'notification_log',
+  {
+    deadlineId: uuid('deadline_id')
+      .notNull()
+      .references(() => deadlines.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    stage: text('stage').notNull(),
+    sentAt: timestamp('sent_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.deadlineId, t.userId, t.stage] })],
 )

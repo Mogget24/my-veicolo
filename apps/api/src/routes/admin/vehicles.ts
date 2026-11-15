@@ -8,6 +8,7 @@ import { APP_NAME } from '@my-veicolo/shared/brand'
 import { formatPlate } from '@my-veicolo/shared/plate'
 import { assignmentsSchema, createVehicleSchema, updateVehicleSchema } from '@my-veicolo/shared/vehicle'
 import type { AppEnv } from '../../context'
+import { createDefaultDeadlines } from '../../deadlines/service'
 import { notifyUsers } from '../../push/send'
 import { validate } from '../../validate'
 
@@ -72,6 +73,7 @@ export const adminVehicleRoutes = new Hono<AppEnv>()
       .insert(vehicles)
       .values({ ...data, createdBy: c.var.user.id })
       .returning()
+    await createDefaultDeadlines(db, vehicle!.id, vehicle!.registrationDate)
     const userIds = await existingUserIds(db, assignTo)
     if (userIds.length) {
       await db.insert(vehicleAssignments).values(userIds.map((userId) => ({ vehicleId: vehicle!.id, userId, assignedBy: c.var.user.id })))

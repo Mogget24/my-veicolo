@@ -15,6 +15,13 @@
       "when": 1794764847197,
       "tag": "0001_phase2_admin",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794775074439,
+      "tag": "0002_phase3_deadlines",
+      "breakpoints": true
     }
   ]
 }

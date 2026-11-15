@@ -6,6 +6,8 @@ import type { AppEnv, Deps } from './context'
 import { lookupBudgetFromEnv, requireEnv } from './env'
 import { plateProviderFromEnv } from './plates/provider'
 import { adminRoutes } from './routes/admin'
+import { cronRoutes } from './routes/cron'
+import { deadlineRoutes, vehicleDeadlineRoutes } from './routes/deadlines'
 import { meRoutes } from './routes/me'
 import { passwordResetRoutes } from './routes/password-reset'
 import { pushRoutes } from './routes/push'
@@ -26,9 +28,12 @@ export function createApp(getDeps: () => Deps) {
     .get('/health', (c) => c.json({ ok: true, time: new Date().toISOString() }))
     .route('/me', meRoutes)
     .route('/vehicles', vehicleRoutes)
+    .route('/vehicles', vehicleDeadlineRoutes)
+    .route('/deadlines', deadlineRoutes)
     .route('/admin', adminRoutes)
     .route('/push', pushRoutes)
     .route('/password-reset', passwordResetRoutes)
+    .route('/cron', cronRoutes)
 
   app.notFound((c) => c.json({ error: 'Risorsa non trovata' }, 404))
   app.onError((err, c) => {

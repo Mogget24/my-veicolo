@@ -1,4 +1,4 @@
 {
   "extends": "@my-veicolo/config/tsconfig.base.json",
-  "include": ["src"]
+  "include": ["src", "test"]
 }
