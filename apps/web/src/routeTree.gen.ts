@@ -18,6 +18,8 @@ import { Route as AppNotificheRouteImport } from './routes/_app/notifiche'
 import { Route as ReimpostaPasswordTokenRouteImport } from './routes/reimposta-password.$token'
 import { Route as AppAdminIndexRouteImport } from './routes/_app/admin/index'
 import { Route as AppAdminCostiRouteImport } from './routes/_app/admin/costi'
+import { Route as AppScadenzeIndexRouteImport } from './routes/_app/scadenze/index'
+import { Route as AppScadenzeIdRouteImport } from './routes/_app/scadenze/$id'
 import { Route as AppVeicoliIdRouteImport } from './routes/_app/veicoli/$id'
 import { Route as AppAdminUtentiIdRouteImport } from './routes/_app/admin/utenti/$id'
 import { Route as AppAdminVeicoliIndexRouteImport } from './routes/_app/admin/veicoli/index'
@@ -68,6 +70,16 @@ const AppAdminCostiRoute = AppAdminCostiRouteImport.update({
   path: '/costi',
   getParentRoute: () => AppAdminRoute,
 } as any)
+const AppScadenzeIndexRoute = AppScadenzeIndexRouteImport.update({
+  id: '/scadenze/',
+  path: '/scadenze/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppScadenzeIdRoute = AppScadenzeIdRouteImport.update({
+  id: '/scadenze/$id',
+  path: '/scadenze/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppVeicoliIdRoute = AppVeicoliIdRouteImport.update({
   id: '/veicoli/$id',
   path: '/veicoli/$id',
@@ -102,8 +114,10 @@ export interface FileRoutesByFullPath {
   '/notifiche': typeof AppNotificheRoute
   '/reimposta-password/$token': typeof ReimpostaPasswordTokenRoute
   '/admin/costi': typeof AppAdminCostiRoute
+  '/scadenze/$id': typeof AppScadenzeIdRoute
   '/veicoli/$id': typeof AppVeicoliIdRoute
   '/admin/': typeof AppAdminIndexRoute
+  '/scadenze/': typeof AppScadenzeIndexRoute
   '/admin/utenti/$id': typeof AppAdminUtentiIdRoute
   '/admin/veicoli/$id': typeof AppAdminVeicoliIdRoute
   '/admin/veicoli/nuovo': typeof AppAdminVeicoliNuovoRoute
@@ -116,8 +130,10 @@ export interface FileRoutesByTo {
   '/reimposta-password/$token': typeof ReimpostaPasswordTokenRoute
   '/': typeof AppIndexRoute
   '/admin/costi': typeof AppAdminCostiRoute
+  '/scadenze/$id': typeof AppScadenzeIdRoute
   '/veicoli/$id': typeof AppVeicoliIdRoute
   '/admin': typeof AppAdminIndexRoute
+  '/scadenze': typeof AppScadenzeIndexRoute
   '/admin/utenti/$id': typeof AppAdminUtentiIdRoute
   '/admin/veicoli/$id': typeof AppAdminVeicoliIdRoute
   '/admin/veicoli/nuovo': typeof AppAdminVeicoliNuovoRoute
@@ -133,8 +149,10 @@ export interface FileRoutesById {
   '/reimposta-password/$token': typeof ReimpostaPasswordTokenRoute
   '/_app/': typeof AppIndexRoute
   '/_app/admin/costi': typeof AppAdminCostiRoute
+  '/_app/scadenze/$id': typeof AppScadenzeIdRoute
   '/_app/veicoli/$id': typeof AppVeicoliIdRoute
   '/_app/admin/': typeof AppAdminIndexRoute
+  '/_app/scadenze/': typeof AppScadenzeIndexRoute
   '/_app/admin/utenti/$id': typeof AppAdminUtentiIdRoute
   '/_app/admin/veicoli/$id': typeof AppAdminVeicoliIdRoute
   '/_app/admin/veicoli/nuovo': typeof AppAdminVeicoliNuovoRoute
@@ -150,8 +168,10 @@ export interface FileRouteTypes {
     | '/notifiche'
     | '/reimposta-password/$token'
     | '/admin/costi'
+    | '/scadenze/$id'
     | '/veicoli/$id'
     | '/admin/'
+    | '/scadenze/'
     | '/admin/utenti/$id'
     | '/admin/veicoli/$id'
     | '/admin/veicoli/nuovo'
@@ -164,8 +184,10 @@ export interface FileRouteTypes {
     | '/reimposta-password/$token'
     | '/'
     | '/admin/costi'
+    | '/scadenze/$id'
     | '/veicoli/$id'
     | '/admin'
+    | '/scadenze'
     | '/admin/utenti/$id'
     | '/admin/veicoli/$id'
     | '/admin/veicoli/nuovo'
@@ -180,8 +202,10 @@ export interface FileRouteTypes {
     | '/reimposta-password/$token'
     | '/_app/'
     | '/_app/admin/costi'
+    | '/_app/scadenze/$id'
     | '/_app/veicoli/$id'
     | '/_app/admin/'
+    | '/_app/scadenze/'
     | '/_app/admin/utenti/$id'
     | '/_app/admin/veicoli/$id'
     | '/_app/admin/veicoli/nuovo'
@@ -260,6 +284,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminCostiRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/_app/scadenze/': {
+      id: '/_app/scadenze/'
+      path: '/scadenze'
+      fullPath: '/scadenze/'
+      preLoaderRoute: typeof AppScadenzeIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/scadenze/$id': {
+      id: '/_app/scadenze/$id'
+      path: '/scadenze/$id'
+      fullPath: '/scadenze/$id'
+      preLoaderRoute: typeof AppScadenzeIdRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/veicoli/$id': {
       id: '/_app/veicoli/$id'
       path: '/veicoli/$id'
@@ -324,14 +362,18 @@ interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRouteWithChildren
   AppNotificheRoute: typeof AppNotificheRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppScadenzeIdRoute: typeof AppScadenzeIdRoute
   AppVeicoliIdRoute: typeof AppVeicoliIdRoute
+  AppScadenzeIndexRoute: typeof AppScadenzeIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppAdminRoute: AppAdminRouteWithChildren,
   AppNotificheRoute: AppNotificheRoute,
   AppIndexRoute: AppIndexRoute,
+  AppScadenzeIdRoute: AppScadenzeIdRoute,
   AppVeicoliIdRoute: AppVeicoliIdRoute,
+  AppScadenzeIndexRoute: AppScadenzeIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

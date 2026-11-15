@@ -58,6 +58,9 @@ function AppLayout() {
           <Link to="/" className={navLink} activeProps={navActive} activeOptions={{ exact: true }}>
             Veicoli
           </Link>
+          <Link to="/scadenze" className={navLink} activeProps={navActive}>
+            Scadenze
+          </Link>
           <Link to="/notifiche" className={navLink} activeProps={navActive}>
             Notifiche
           </Link>

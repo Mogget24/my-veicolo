@@ -366,10 +366,10 @@ Plate lookup sits behind `PlateProvider.lookup(plate) → VehicleData` so provid
 - [ ] ~~Choose a paid plate provider~~ **Postponed (2026-11-15):** specs come from the libretto (scan or by hand), deadlines from free official checks. The `PlateProvider` plumbing stays, switched off (`PLATE_PROVIDER` unset), in case typing specs gets tedious.
 
 **Phase 3 — Deadlines, renewals, push** *(MVP done here)*
-- Deadlines (revisione, bollo, RCA, tagliando, gomme, custom) with default generation from the registration date, status badges (rules in `packages/shared`).
-- Renew/snooze flow + `deadline_events` history; "Ho fatto qualcosa" global entry point.
-- **Official checks without scraping:** "Verifica sul sito ufficiale" opens the official page (plate pre-filled where possible); the user solves any captcha there, then types or **pastes** the result back and the app extracts the date(s). No captcha relay, no server-side scraping (ToS, fragility).
-- Daily Vercel Cron + Web Push (stage-based thresholds 30/7/1/0 days, every 3 days overdue, dedupe log, banned users skipped), Android notification actions (renew / snooze).
+- [x] Deadlines (revisione, bollo, RCA, tagliando, gomme, custom) with default generation from the registration date, status badges (rules in `packages/shared`).
+- [x] Renew/snooze flow + `deadline_events` history; "Scadenze" page as the "Ho fatto qualcosa" entry point; "Da fare" on the home page.
+- [x] **Official checks without scraping:** "Verifica sul sito ufficiale" opens the official page (plate pre-filled where possible); the user solves any captcha there, then types or **pastes** the result back and the app extracts the date(s). No captcha relay, no server-side scraping (ToS, fragility).
+- [x] Daily Vercel Cron (07:00 UTC, `CRON_SECRET`) + Web Push (stage-based thresholds 30/7/1/0 days, every 3 days overdue, dedupe log, banned users skipped), Android notification actions (renew / snooze).
 
 **Phase 3b — Libretto scan**
 - Photo of the libretto → **Tesseract.js on the device** (free, nothing leaves the phone) → parse by the harmonized field codes (A, B, D.1–D.3, E, P.1–P.3, V.9) → prefill the vehicle form for review. Owner fields (C.*) are never extracted. Language data self-hosted/cached by the service worker.

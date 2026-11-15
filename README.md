@@ -49,7 +49,7 @@ Other tasks: `pnpm build`, `pnpm test`, `pnpm typecheck`.
 
 1. Import the repo in Vercel, set **Root Directory** to `apps/web` (framework: Vite; keep "Include files outside the root directory" on).
 2. Connect the Neon database (Storage) → sets `DATABASE_URL`.
-3. Add env vars: `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`, `BETTER_AUTH_SECRET`, `ADMIN_EMAILS`, and `ENABLE_EXPERIMENTAL_COREPACK=1` (makes Vercel use the pnpm version from `packageManager`).
+3. Add env vars: `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`, `BETTER_AUTH_SECRET`, `ADMIN_EMAILS`, `CRON_SECRET` (any random string: Vercel Cron sends it to `/api/cron/reminders`), and `ENABLE_EXPERIMENTAL_COREPACK=1` (makes Vercel use the pnpm version from `packageManager`).
 4. Deploy. `/api/*` is rewritten to the Hono function (region `fra1`, next to the database), everything else to the SPA (see `apps/web/vercel.json`).
 
 ## Testing push

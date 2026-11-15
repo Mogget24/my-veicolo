@@ -12,7 +12,7 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "passThroughEnv": ["ADMIN_EMAILS", "SIGNUP_ENABLED", "DEV_DATABASE", "API_PORT", "BETTER_AUTH_*", "VAPID_*"]
+      "passThroughEnv": ["ADMIN_EMAILS", "SIGNUP_ENABLED", "DEV_DATABASE", "API_PORT", "BETTER_AUTH_*", "VAPID_*", "CRON_SECRET", "PLATE_PROVIDER", "LOOKUP_MONTHLY_BUDGET_EUR"]
     }
   }
 }

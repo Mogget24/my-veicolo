@@ -2,6 +2,8 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import { buttonClass } from '../../../components/Button'
 import { Plate } from '../../../components/Plate'
+import { VehicleDeadlines } from '../../../components/VehicleDeadlines'
+import { vehicleDeadlinesQuery } from '../../../lib/deadlines'
 import { dateFmt } from '../../../lib/admin'
 import { api } from '../../../lib/api'
 import { apiError } from '../../../lib/http'
@@ -17,7 +19,11 @@ const vehicleQuery = (id: string) =>
   })
 
 export const Route = createFileRoute('/_app/veicoli/$id')({
-  loader: ({ context, params }) => context.queryClient.query({ ...vehicleQuery(params.id), staleTime: 'static' }),
+  loader: ({ context, params }) =>
+    Promise.all([
+      context.queryClient.query({ ...vehicleQuery(params.id), staleTime: 'static' }),
+      context.queryClient.query({ ...vehicleDeadlinesQuery(params.id), staleTime: 'static' }),
+    ]),
   component: VehicleDetail,
 })
 
@@ -69,9 +75,7 @@ function VehicleDetail() {
         {v.notes && <p className="mt-4 whitespace-pre-line border-t border-line pt-3 text-sm text-silver-300">{v.notes}</p>}
       </section>
 
-      <p className="rounded-2xl border border-dashed border-line p-4 text-center text-sm text-silver-500">
-        Scadenze, manutenzioni e documenti arrivano nelle prossime fasi.
-      </p>
+      <VehicleDeadlines vehicleId={v.id} />
 
       {session.user.role === 'admin' && (
         <Link to="/admin/veicoli/$id" params={{ id: v.id }} className={buttonClass('outline', 'w-full')}>
