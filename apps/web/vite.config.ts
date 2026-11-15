@@ -25,8 +25,8 @@ export default defineConfig({
         scope: '/',
         display: 'standalone',
         orientation: 'portrait',
-        theme_color: '#0f766e',
-        background_color: '#ffffff',
+        theme_color: '#0b0c0e',
+        background_color: '#0b0c0e',
       },
       injectManifest: {
         // No webmanifest here: the plugin adds it itself, and a duplicate URL with a

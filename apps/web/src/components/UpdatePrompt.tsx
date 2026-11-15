@@ -11,7 +11,7 @@ export function UpdatePrompt() {
   if (!needRefresh) return null
 
   return (
-    <div className="fixed inset-x-4 bottom-4 z-50 flex items-center gap-3 rounded-xl bg-slate-900 p-4 text-sm text-white shadow-lg">
+    <div className="fixed inset-x-4 bottom-4 z-50 flex items-center gap-3 rounded-xl border border-line bg-surface p-4 text-sm text-silver-100 shadow-lg shadow-black/50">
       <span className="flex-1">È disponibile una nuova versione.</span>
       <Button variant="ghost" className="px-3 py-1.5" onClick={() => setNeedRefresh(false)}>
         Più tardi

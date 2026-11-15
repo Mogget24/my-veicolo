@@ -18,7 +18,7 @@ function Home() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">I miei veicoli</h1>
-      <p className="text-slate-600 dark:text-slate-400">
+      <p className="text-silver-400">
         Fase 0: scheletro dell'app. Qui comparirà l'elenco dei veicoli assegnati.
       </p>
       <p className="text-sm">

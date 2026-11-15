@@ -31,7 +31,8 @@ self.addEventListener('push', (event) => {
       body: payload.body,
       tag: payload.tag,
       icon: '/pwa-192x192.png',
-      badge: '/pwa-64x64.png',
+      // Monochrome silhouette: Android draws the badge from its alpha channel only.
+      badge: '/badge-96.png',
       data: { url: payload.url },
     }),
   )

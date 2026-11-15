@@ -1,11 +1,39 @@
 @import "tailwindcss";
 
+/*
+ * Dark-only theme, silver brand. Contrast on --color-bg (#0b0c0e):
+ *   silver-100 text 16.4:1 · silver-300 10.8:1+ · silver-400 (muted) 8.8:1 · silver-500 (subtle) 6.3:1
+ *   bg-colored text on a silver-300 button 11.6:1
+ * Keep body text at silver-400 or lighter; silver-500 only for secondary hints.
+ */
+@theme {
+  --color-bg: #0b0c0e;
+  --color-surface: #16181b;
+  --color-line: #26292d;
+
+  --color-silver-50: #f6f7f8;
+  --color-silver-100: #e9ebee;
+  --color-silver-200: #d4d8dd;
+  --color-silver-300: #c4c8ce;
+  --color-silver-400: #a9aeb6;
+  --color-silver-500: #8d939c;
+  --color-silver-600: #6f757e;
+  --color-silver-700: #565b63;
+  --color-silver-800: #3d4147;
+  --color-silver-900: #26292d;
+  --color-silver-950: #16181b;
+}
+
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
 }
 
 body {
-  @apply bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+  @apply bg-bg text-silver-100 antialiased;
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+::selection {
+  @apply bg-silver-300 text-bg;
 }

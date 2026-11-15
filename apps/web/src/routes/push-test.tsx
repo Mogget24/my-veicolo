@@ -43,7 +43,7 @@ function PushTest() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Prova notifiche</h1>
 
-      <dl className="grid grid-cols-2 gap-2 rounded-xl bg-slate-100 p-4 text-sm dark:bg-slate-900">
+      <dl className="grid grid-cols-2 gap-2 rounded-xl border border-line bg-surface p-4 text-sm [&_dt]:text-silver-400">
         <dt>Dispositivo</dt>
         <dd>{ios ? 'iPhone / iPad' : 'Altro'}</dd>
         <dt>App installata</dt>
@@ -57,7 +57,7 @@ function PushTest() {
       </dl>
 
       {ios && !standalone && (
-        <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-200">
+        <div className="rounded-xl border border-amber-700 bg-amber-950 p-4 text-sm text-amber-200">
           Su iPhone le notifiche funzionano solo se l'app è installata: in Safari tocca <strong>Condividi</strong> →{' '}
           <strong>Aggiungi alla schermata Home</strong>, poi apri my-veicolo dall'icona.
         </div>
@@ -102,7 +102,7 @@ function PushTest() {
           Invia tra 10 secondi (app chiusa)
         </Button>
         {!subscription && (
-          <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-center text-sm text-silver-400">
             {supported
               ? "Tocca prima “Attiva notifiche” per abilitare l'invio di prova."
               : 'Questo browser non supporta le notifiche push.'}
@@ -111,7 +111,7 @@ function PushTest() {
       </div>
 
       {log.length > 0 && (
-        <ul className="space-y-1 text-xs text-slate-600 dark:text-slate-400">
+        <ul className="space-y-1 text-xs text-silver-400">
           {log.map((l, i) => (
             <li key={i}>{l}</li>
           ))}

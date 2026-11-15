@@ -7,15 +7,13 @@ type Variant = 'primary' | 'outline' | 'ghost'
 const base =
   'inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 font-medium select-none ' +
   'transition duration-100 ease-out touch-manipulation active:scale-[0.97] ' +
-  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 ' +
-  'disabled:pointer-events-none disabled:opacity-50'
+  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-silver-300 ' +
+  'disabled:pointer-events-none disabled:opacity-40'
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-teal-700 text-white hover:bg-teal-800 active:bg-teal-900',
-  outline:
-    'border border-teal-700 text-teal-700 hover:bg-teal-50 active:bg-teal-100 ' +
-    'dark:text-teal-400 dark:hover:bg-teal-950 dark:active:bg-teal-900',
-  ghost: 'text-slate-300 hover:bg-white/10 active:bg-white/20',
+  primary: 'bg-silver-300 text-bg hover:bg-silver-200 active:bg-silver-400',
+  outline: 'border border-silver-500 text-silver-200 hover:bg-white/5 active:bg-white/10',
+  ghost: 'text-silver-300 hover:bg-white/5 active:bg-white/10',
 }
 
 /** Button classes, also usable on <a>/<Link>. */

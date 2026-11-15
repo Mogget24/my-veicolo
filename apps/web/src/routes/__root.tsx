@@ -10,12 +10,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootLayout() {
   return (
     <div className="mx-auto min-h-dvh max-w-xl">
-      <header className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-slate-800">
-        <Link to="/" className="text-lg font-semibold text-teal-700 dark:text-teal-400">
+      <header className="flex items-center justify-between border-b border-line px-4 py-3">
+        <Link to="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight text-silver-200">
+          <img src="/icon.svg" alt="" className="size-8 rounded-lg" />
           my-veicolo
         </Link>
         <nav className="flex gap-4 text-sm">
-          <Link to="/push-test" activeProps={{ className: 'font-semibold' }}>
+          <Link to="/push-test" className="text-silver-400 hover:text-silver-200" activeProps={{ className: 'text-silver-100 font-semibold' }}>
             Notifiche
           </Link>
         </nav>

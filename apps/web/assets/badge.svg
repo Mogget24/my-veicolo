@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="112 119 300 300">
+  <!--
+    Notification badge (Android status bar). Android only uses the alpha channel,
+    so this must be a white silhouette on transparent: an opaque image shows as a square.
+    Same glyph as icon.svg, with windows and wheels cut out via the mask.
+  -->
+  <defs>
+    <mask id="cut" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <rect width="512" height="512" fill="#fff"/>
+      <path fill="#000" d="M198 240l30-34c4-5 10-8 18-8h26v42zM284 198h26c8 0 14 3 19 9l27 33h-72z"/>
+      <circle cx="184" cy="312" r="40" fill="#000"/>
+      <circle cx="340" cy="312" r="40" fill="#000"/>
+      <circle cx="184" cy="312" r="30" fill="#fff"/>
+      <circle cx="340" cy="312" r="30" fill="#fff"/>
+      <circle cx="184" cy="312" r="11" fill="#000"/>
+      <circle cx="340" cy="312" r="11" fill="#000"/>
+    </mask>
+  </defs>
+  <g mask="url(#cut)" fill="#fff">
+    <path d="M120 296V270c0-14 10-22 24-24l40-6 36-40c8-9 18-14 30-14h62c12 0 22 5 30 14l32 40 6 1c16 3 24 13 24 27v28c0 10-7 16-16 16H128c-5 0-8-6-8-16z"/>
+    <circle cx="184" cy="312" r="30"/>
+    <circle cx="340" cy="312" r="30"/>
+  </g>
+</svg>
