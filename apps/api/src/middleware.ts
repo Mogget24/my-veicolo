@@ -3,8 +3,8 @@ import type { AppEnv } from './context'
 
 /**
  * Requires a valid session (banned users have none: the admin plugin revokes them).
- * The cookie cache is bypassed so a ban or sign-out takes effect immediately,
- * at the cost of one small DB query per API request.
+ * The cookie cache is off in auth.ts; bypassing it here too keeps API authorization
+ * DB-backed even if someone re-enables it.
  */
 export const authed = createMiddleware<AppEnv>(async (c, next) => {
   const result = await c.var.deps.auth.api.getSession({

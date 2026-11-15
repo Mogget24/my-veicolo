@@ -15,6 +15,14 @@ import { Route as RegistratiRouteImport } from './routes/registrati'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppAdminRouteImport } from './routes/_app/admin'
 import { Route as AppNotificheRouteImport } from './routes/_app/notifiche'
+import { Route as ReimpostaPasswordTokenRouteImport } from './routes/reimposta-password.$token'
+import { Route as AppAdminIndexRouteImport } from './routes/_app/admin/index'
+import { Route as AppAdminCostiRouteImport } from './routes/_app/admin/costi'
+import { Route as AppVeicoliIdRouteImport } from './routes/_app/veicoli/$id'
+import { Route as AppAdminUtentiIdRouteImport } from './routes/_app/admin/utenti/$id'
+import { Route as AppAdminVeicoliIndexRouteImport } from './routes/_app/admin/veicoli/index'
+import { Route as AppAdminVeicoliIdRouteImport } from './routes/_app/admin/veicoli/$id'
+import { Route as AppAdminVeicoliNuovoRouteImport } from './routes/_app/admin/veicoli/nuovo'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -45,35 +53,123 @@ const AppNotificheRoute = AppNotificheRouteImport.update({
   path: '/notifiche',
   getParentRoute: () => AppRoute,
 } as any)
+const ReimpostaPasswordTokenRoute = ReimpostaPasswordTokenRouteImport.update({
+  id: '/reimposta-password/$token',
+  path: '/reimposta-password/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppAdminIndexRoute = AppAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminCostiRoute = AppAdminCostiRouteImport.update({
+  id: '/costi',
+  path: '/costi',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppVeicoliIdRoute = AppVeicoliIdRouteImport.update({
+  id: '/veicoli/$id',
+  path: '/veicoli/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminUtentiIdRoute = AppAdminUtentiIdRouteImport.update({
+  id: '/utenti/$id',
+  path: '/utenti/$id',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminVeicoliIndexRoute = AppAdminVeicoliIndexRouteImport.update({
+  id: '/veicoli/',
+  path: '/veicoli/',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminVeicoliIdRoute = AppAdminVeicoliIdRouteImport.update({
+  id: '/veicoli/$id',
+  path: '/veicoli/$id',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminVeicoliNuovoRoute = AppAdminVeicoliNuovoRouteImport.update({
+  id: '/veicoli/nuovo',
+  path: '/veicoli/nuovo',
+  getParentRoute: () => AppAdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/accedi': typeof AccediRoute
   '/registrati': typeof RegistratiRoute
-  '/admin': typeof AppAdminRoute
+  '/admin': typeof AppAdminRouteWithChildren
   '/notifiche': typeof AppNotificheRoute
+  '/reimposta-password/$token': typeof ReimpostaPasswordTokenRoute
+  '/admin/costi': typeof AppAdminCostiRoute
+  '/veicoli/$id': typeof AppVeicoliIdRoute
+  '/admin/': typeof AppAdminIndexRoute
+  '/admin/utenti/$id': typeof AppAdminUtentiIdRoute
+  '/admin/veicoli/$id': typeof AppAdminVeicoliIdRoute
+  '/admin/veicoli/nuovo': typeof AppAdminVeicoliNuovoRoute
+  '/admin/veicoli/': typeof AppAdminVeicoliIndexRoute
 }
 export interface FileRoutesByTo {
   '/accedi': typeof AccediRoute
   '/registrati': typeof RegistratiRoute
-  '/admin': typeof AppAdminRoute
   '/notifiche': typeof AppNotificheRoute
+  '/reimposta-password/$token': typeof ReimpostaPasswordTokenRoute
   '/': typeof AppIndexRoute
+  '/admin/costi': typeof AppAdminCostiRoute
+  '/veicoli/$id': typeof AppVeicoliIdRoute
+  '/admin': typeof AppAdminIndexRoute
+  '/admin/utenti/$id': typeof AppAdminUtentiIdRoute
+  '/admin/veicoli/$id': typeof AppAdminVeicoliIdRoute
+  '/admin/veicoli/nuovo': typeof AppAdminVeicoliNuovoRoute
+  '/admin/veicoli': typeof AppAdminVeicoliIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/accedi': typeof AccediRoute
   '/registrati': typeof RegistratiRoute
-  '/_app/admin': typeof AppAdminRoute
+  '/_app/admin': typeof AppAdminRouteWithChildren
   '/_app/notifiche': typeof AppNotificheRoute
+  '/reimposta-password/$token': typeof ReimpostaPasswordTokenRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/admin/costi': typeof AppAdminCostiRoute
+  '/_app/veicoli/$id': typeof AppVeicoliIdRoute
+  '/_app/admin/': typeof AppAdminIndexRoute
+  '/_app/admin/utenti/$id': typeof AppAdminUtentiIdRoute
+  '/_app/admin/veicoli/$id': typeof AppAdminVeicoliIdRoute
+  '/_app/admin/veicoli/nuovo': typeof AppAdminVeicoliNuovoRoute
+  '/_app/admin/veicoli/': typeof AppAdminVeicoliIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/accedi' | '/registrati' | '/admin' | '/notifiche'
+  fullPaths:
+    | '/'
+    | '/accedi'
+    | '/registrati'
+    | '/admin'
+    | '/notifiche'
+    | '/reimposta-password/$token'
+    | '/admin/costi'
+    | '/veicoli/$id'
+    | '/admin/'
+    | '/admin/utenti/$id'
+    | '/admin/veicoli/$id'
+    | '/admin/veicoli/nuovo'
+    | '/admin/veicoli/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/accedi' | '/registrati' | '/admin' | '/notifiche' | '/'
+  to:
+    | '/accedi'
+    | '/registrati'
+    | '/notifiche'
+    | '/reimposta-password/$token'
+    | '/'
+    | '/admin/costi'
+    | '/veicoli/$id'
+    | '/admin'
+    | '/admin/utenti/$id'
+    | '/admin/veicoli/$id'
+    | '/admin/veicoli/nuovo'
+    | '/admin/veicoli'
   id:
     | '__root__'
     | '/_app'
@@ -81,13 +177,22 @@ export interface FileRouteTypes {
     | '/registrati'
     | '/_app/admin'
     | '/_app/notifiche'
+    | '/reimposta-password/$token'
     | '/_app/'
+    | '/_app/admin/costi'
+    | '/_app/veicoli/$id'
+    | '/_app/admin/'
+    | '/_app/admin/utenti/$id'
+    | '/_app/admin/veicoli/$id'
+    | '/_app/admin/veicoli/nuovo'
+    | '/_app/admin/veicoli/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AccediRoute: typeof AccediRoute
   RegistratiRoute: typeof RegistratiRoute
+  ReimpostaPasswordTokenRoute: typeof ReimpostaPasswordTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -134,19 +239,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppNotificheRouteImport
       parentRoute: typeof AppRoute
     }
+    '/reimposta-password/$token': {
+      id: '/reimposta-password/$token'
+      path: '/reimposta-password/$token'
+      fullPath: '/reimposta-password/$token'
+      preLoaderRoute: typeof ReimpostaPasswordTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/admin/': {
+      id: '/_app/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AppAdminIndexRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/_app/admin/costi': {
+      id: '/_app/admin/costi'
+      path: '/costi'
+      fullPath: '/admin/costi'
+      preLoaderRoute: typeof AppAdminCostiRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/_app/veicoli/$id': {
+      id: '/_app/veicoli/$id'
+      path: '/veicoli/$id'
+      fullPath: '/veicoli/$id'
+      preLoaderRoute: typeof AppVeicoliIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/admin/utenti/$id': {
+      id: '/_app/admin/utenti/$id'
+      path: '/utenti/$id'
+      fullPath: '/admin/utenti/$id'
+      preLoaderRoute: typeof AppAdminUtentiIdRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/_app/admin/veicoli/': {
+      id: '/_app/admin/veicoli/'
+      path: '/veicoli'
+      fullPath: '/admin/veicoli/'
+      preLoaderRoute: typeof AppAdminVeicoliIndexRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/_app/admin/veicoli/$id': {
+      id: '/_app/admin/veicoli/$id'
+      path: '/veicoli/$id'
+      fullPath: '/admin/veicoli/$id'
+      preLoaderRoute: typeof AppAdminVeicoliIdRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/_app/admin/veicoli/nuovo': {
+      id: '/_app/admin/veicoli/nuovo'
+      path: '/veicoli/nuovo'
+      fullPath: '/admin/veicoli/nuovo'
+      preLoaderRoute: typeof AppAdminVeicoliNuovoRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
   }
 }
 
+interface AppAdminRouteChildren {
+  AppAdminCostiRoute: typeof AppAdminCostiRoute
+  AppAdminIndexRoute: typeof AppAdminIndexRoute
+  AppAdminUtentiIdRoute: typeof AppAdminUtentiIdRoute
+  AppAdminVeicoliIdRoute: typeof AppAdminVeicoliIdRoute
+  AppAdminVeicoliNuovoRoute: typeof AppAdminVeicoliNuovoRoute
+  AppAdminVeicoliIndexRoute: typeof AppAdminVeicoliIndexRoute
+}
+
+const AppAdminRouteChildren: AppAdminRouteChildren = {
+  AppAdminCostiRoute: AppAdminCostiRoute,
+  AppAdminIndexRoute: AppAdminIndexRoute,
+  AppAdminUtentiIdRoute: AppAdminUtentiIdRoute,
+  AppAdminVeicoliIdRoute: AppAdminVeicoliIdRoute,
+  AppAdminVeicoliNuovoRoute: AppAdminVeicoliNuovoRoute,
+  AppAdminVeicoliIndexRoute: AppAdminVeicoliIndexRoute,
+}
+
+const AppAdminRouteWithChildren = AppAdminRoute._addFileChildren(
+  AppAdminRouteChildren,
+)
+
 interface AppRouteChildren {
-  AppAdminRoute: typeof AppAdminRoute
+  AppAdminRoute: typeof AppAdminRouteWithChildren
   AppNotificheRoute: typeof AppNotificheRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppVeicoliIdRoute: typeof AppVeicoliIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppAdminRoute: AppAdminRoute,
+  AppAdminRoute: AppAdminRouteWithChildren,
   AppNotificheRoute: AppNotificheRoute,
   AppIndexRoute: AppIndexRoute,
+  AppVeicoliIdRoute: AppVeicoliIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -155,6 +340,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AccediRoute: AccediRoute,
   RegistratiRoute: RegistratiRoute,
+  ReimpostaPasswordTokenRoute: ReimpostaPasswordTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

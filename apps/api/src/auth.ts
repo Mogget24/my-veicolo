@@ -32,7 +32,9 @@ export function createAuth(db: Db, opts: AuthOptions) {
       // Long-lived sliding sessions: phone users should rarely have to log in again.
       expiresIn: 60 * 60 * 24 * 60,
       updateAge: 60 * 60 * 24,
-      cookieCache: { enabled: true, maxAge: 5 * 60 },
+      // No cookie cache: every session check hits the DB, so a ban, a password reset or a
+      // sign-out on another device takes effect immediately (also for the UI, not only the API).
+      cookieCache: { enabled: false },
     },
     rateLimit: {
       enabled: opts.rateLimit,

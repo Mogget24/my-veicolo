@@ -354,12 +354,16 @@ Plate lookup sits behind `PlateProvider.lookup(plate) → VehicleData` so provid
 - [x] API: `createApp(getDeps)`, `authed` (cookie cache bypassed so bans apply immediately) + `adminOnly`, `canAccessVehicle`; `/me`, `/vehicles`, `/admin/users`, per-user push subscriptions.
 - [x] Web: Accedi / Registrati (TanStack Form + shared Zod schemas, Italian errors), protected layout, waiting screen, admin users list, logout removes the device from push.
 - [x] Tests: 20 API tests incl. cross-user access; end-to-end browser run of the full flow.
-- [ ] Apply the migration to Neon, set `BETTER_AUTH_SECRET` + `ADMIN_EMAILS` on Vercel, deploy, sign up as admin.
+- [x] Apply the migration to Neon (dedicated database), set `BETTER_AUTH_SECRET` + `ADMIN_EMAILS` on Vercel, deploy, sign up as admin.
 
 **Phase 2 — Admin panel & vehicles**
-- Users list (ban, promote, reset link).
-- Add-by-plate with cache + budget guard + cost log; assignments (from vehicle and from user row).
-- Vehicle list/detail for users.
+- [x] Migration 0001: plate lookup cache, API call log, reset links, more vehicle fields.
+- [x] `PlateProvider` interface + `lookupPlate` (free cache per plate, `force` pays, monthly budget, every call logged, failures not charged). `fake` provider for dev/tests; production stays manual until a provider is chosen.
+- [x] Admin UI: Utenti (detail: assign/unassign, reset link with copy/share, promote, suspend), Veicoli (add by plate or by hand, edit, assignments with push to new assignees, delete), Costi (month vs budget, latest calls).
+- [x] Public "Reimposta password" page (one use, 24h, signs out all devices). Vehicle detail page for users.
+- [x] Session cookie cache disabled: bans, resets and sign-outs apply immediately in the UI too.
+- [x] 41 API tests; end-to-end browser run of the whole admin flow.
+- [ ] Choose the plate provider (Phase 0 comparison) and implement it behind `PlateProvider`.
 
 **Phase 3 — Deadlines, renewals, push** *(MVP done here)*
 - Default deadline generation, status badges (rules in `packages/shared`).

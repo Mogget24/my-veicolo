@@ -2,6 +2,7 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import { api } from '../../lib/api'
 import { buttonClass } from '../../components/Button'
+import { Plate } from '../../components/Plate'
 
 const vehiclesQuery = queryOptions({
   queryKey: ['vehicles'],
@@ -31,7 +32,7 @@ function Vehicles() {
           <h1 className="text-2xl font-bold">Ciao {firstName}!</h1>
           {isAdmin ? (
             <p className="text-silver-400">
-              Non ci sono ancora veicoli. Potrai aggiungerli per targa dal pannello Admin.
+              Non ci sono ancora veicoli. Aggiungili per targa dal pannello Admin.
             </p>
           ) : (
             <p className="text-silver-400">
@@ -57,26 +58,21 @@ function Vehicles() {
       <h1 className="text-2xl font-bold">{isAdmin ? 'Tutti i veicoli' : 'I miei veicoli'}</h1>
       <ul className="space-y-3">
         {vehicles.map((v) => (
-          <li key={v.id} className="flex items-center gap-4 rounded-2xl border border-line bg-surface p-4">
-            <Plate value={v.plate} />
-            <div className="min-w-0">
-              <p className="truncate font-medium">{[v.make, v.model].filter(Boolean).join(' ') || 'Veicolo'}</p>
-              {v.version && <p className="truncate text-sm text-silver-400">{v.version}</p>}
-            </div>
+          <li key={v.id}>
+            <Link
+              to="/veicoli/$id"
+              params={{ id: v.id }}
+              className="flex items-center gap-4 rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-silver-700 active:bg-white/5"
+            >
+              <Plate value={v.plate} />
+              <div className="min-w-0">
+                <p className="truncate font-medium">{[v.make, v.model].filter(Boolean).join(' ') || 'Veicolo'}</p>
+                {v.version && <p className="truncate text-sm text-silver-400">{v.version}</p>}
+              </div>
+            </Link>
           </li>
         ))}
       </ul>
     </div>
-  )
-}
-
-/** Italian-style plate badge: AB 123 CD. */
-function Plate({ value }: { value: string }) {
-  const formatted = /^[A-Z]{2}\d{3}[A-Z]{2}$/.test(value) ? `${value.slice(0, 2)} ${value.slice(2, 5)} ${value.slice(5)}` : value
-  return (
-    <span className="flex shrink-0 overflow-hidden rounded-md border border-silver-400 bg-silver-50 font-mono text-sm font-bold tracking-wider text-bg">
-      <span className="flex items-end bg-blue-700 px-1 pb-0.5 text-[9px] font-sans font-semibold text-white">I</span>
-      <span className="px-2 py-1">{formatted}</span>
-    </span>
   )
 }

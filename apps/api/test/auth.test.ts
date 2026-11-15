@@ -57,6 +57,7 @@ describe('auth', () => {
     expect(ban.status).toBe(200)
 
     expect((await b.request('/api/me', { cookie })).status).toBe(401)
+    expect(await json(await b.request('/api/auth/get-session', { cookie }))).toBeNull()
     const relogin = await b.request('/api/auth/sign-in/email', {
       body: { email: 'cattivo@test.it', password: 'password-sicura-1' },
     })

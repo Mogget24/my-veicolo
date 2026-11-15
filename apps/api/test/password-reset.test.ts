@@ -39,8 +39,9 @@ describe('admin password reset links', () => {
 
     expect((await signIn('vecchia-password')).ok).toBe(false)
     expect((await signIn('nuova-password-1')).ok).toBe(true)
-    // existing sessions were revoked
+    // existing sessions were revoked, for the API and for the browser's session check
     expect((await t.request('/api/me', { cookie: marioCookie })).status).toBe(401)
+    expect(await json(await t.request('/api/auth/get-session', { cookie: marioCookie }))).toBeNull()
 
     // single use
     expect((await t.request(`/api/password-reset/${token}`, { body: { password: 'altra-password-2' } })).status).toBe(404)

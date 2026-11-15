@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes } from 'react'
 
-type Variant = 'primary' | 'outline' | 'ghost'
+type Variant = 'primary' | 'outline' | 'ghost' | 'danger'
 
 // Disabled buttons get pointer-events-none, so hover/active never fire on them.
 // That keeps the same classes valid for <a>/<Link> styled as buttons.
@@ -14,6 +14,8 @@ const variants: Record<Variant, string> = {
   primary: 'bg-silver-300 text-bg hover:bg-silver-200 active:bg-silver-400',
   outline: 'border border-silver-500 text-silver-200 hover:bg-white/5 active:bg-white/10',
   ghost: 'text-silver-300 hover:bg-white/5 active:bg-white/10',
+  /** Destructive actions (delete, suspend). red-300 on bg: 10.3:1. */
+  danger: 'border border-red-800 text-red-300 hover:bg-red-950/50 active:bg-red-950',
 }
 
 /** Button classes, also usable on <a>/<Link>. */

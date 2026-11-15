@@ -33,7 +33,9 @@ pnpm dev                    # web on :5173, api on :8787 (proxied at /api)
 
 `pnpm dev` uses a **local PGlite database** in `apps/api/.data` (migrations applied on start), so it never touches production. Delete the folder to reset it. `DEV_DATABASE=neon pnpm dev` uses `DATABASE_URL` instead.
 
-To become admin locally: put your email in `ADMIN_EMAILS` and sign up.
+To become admin locally: put your email in `ADMIN_EMAILS` and sign up. Plate lookups in dev use a free **fake provider** (`PLATE_PROVIDER=fake`, default in `pnpm dev`; plates starting with `ERR` simulate a failure).
+
+**Stopping dev servers on Windows:** `tsx watch` restarts the API when its child is killed, so close the terminal running `pnpm dev` (or kill the whole process tree), otherwise a stale API keeps port 8787.
 
 Other tasks: `pnpm build`, `pnpm test`, `pnpm typecheck`.
 

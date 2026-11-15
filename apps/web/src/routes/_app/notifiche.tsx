@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { Button } from '../../components/Button'
+import { errorText } from '../../lib/http'
 import { APP_NAME } from '@my-veicolo/shared/brand'
 import { getCurrentSubscription, isIOS, isPushSupported, isStandalone, sendTestPush, subscribeToPush } from '../../lib/push'
 
 export const Route = createFileRoute('/_app/notifiche')({ component: Notifications })
 
 const currentPermission = () => ('Notification' in window ? Notification.permission : 'unsupported')
-const errorText = (err: unknown) => (err instanceof Error ? err.message : String(err))
 
 function Notifications() {
   const [subscription, setSubscription] = useState<PushSubscription | null>(null)

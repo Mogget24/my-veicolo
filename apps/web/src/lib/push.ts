@@ -1,4 +1,5 @@
 import { api } from './api'
+import { apiError } from './http'
 
 export const isIOS = () =>
   /iPad|iPhone|iPod/.test(navigator.userAgent) ||
@@ -36,11 +37,6 @@ function serviceWorkerReady(): Promise<ServiceWorkerRegistration> {
   )
 }
 
-async function errorFrom(res: Response, fallback: string): Promise<Error> {
-  const body = (await res.json().catch(() => null)) as { error?: unknown } | null
-  return new Error(typeof body?.error === 'string' ? body.error : `${fallback} (HTTP ${res.status})`)
-}
-
 export async function getCurrentSubscription(): Promise<PushSubscription | null> {
   if (!isPushSupported()) return null
   const reg = await serviceWorkerReady()
@@ -53,7 +49,7 @@ async function saveSubscription(sub: PushSubscription) {
   const res = await api.push.subscribe.$post({
     json: { subscription: { endpoint: json.endpoint, keys: { p256dh: json.keys.p256dh, auth: json.keys.auth } } },
   })
-  if (!res.ok) throw await errorFrom(res, 'Impossibile registrare il dispositivo')
+  if (!res.ok) throw await apiError(res, 'Impossibile registrare il dispositivo')
 }
 
 /**
@@ -107,6 +103,6 @@ export async function unsubscribeThisDevice() {
 
 export async function sendTestPush(delaySeconds = 0) {
   const res = await api.push.test.$post({ json: { delaySeconds } })
-  if (!res.ok) throw await errorFrom(res, 'Invio fallito')
+  if (!res.ok) throw await apiError(res, 'Invio fallito')
   return res.json()
 }
