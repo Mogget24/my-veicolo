@@ -3,6 +3,8 @@ import { vehicleAssignments, vehicles } from '@my-veicolo/db/schema/app'
 import type { Db } from '@my-veicolo/db/client'
 import { createAuth, type AuthOptions } from '../src/auth'
 import { createApp } from '../src/app'
+import type { AppConfig } from '../src/context'
+import { createFakeProvider, type PlateProvider } from '../src/plates/provider'
 
 export const ORIGIN = 'http://localhost:5173'
 export const ADMIN_EMAIL = 'admin@test.it'
@@ -13,7 +15,11 @@ export const SECOND_ADMIN_EMAIL = 'capo@test.it'
  * Pass `db` to build another app (e.g. different auth options) on the same database:
  * each PGlite instance is memory-hungry, so keep one per test file and `close()` it in afterAll.
  */
-export async function createTestApp(overrides: Partial<AuthOptions> = {}, existingDb?: PgliteDb) {
+export async function createTestApp(
+  overrides: Partial<AuthOptions> = {},
+  existingDb?: PgliteDb,
+  extra: { plates?: PlateProvider | null; config?: Partial<AppConfig> } = {},
+) {
   const db = existingDb ?? (await createPgliteDb())
   const auth = createAuth(db, {
     baseURL: ORIGIN,
@@ -23,7 +29,13 @@ export async function createTestApp(overrides: Partial<AuthOptions> = {}, existi
     rateLimit: false,
     ...overrides,
   })
-  const app = createApp(() => ({ db, auth }))
+  const deps = {
+    db,
+    auth,
+    plates: extra.plates === undefined ? createFakeProvider(0.5) : extra.plates,
+    config: { appOrigin: ORIGIN, lookupMonthlyBudgetEur: 1, ...extra.config },
+  }
+  const app = createApp(() => deps)
 
   /** JSON request as the browser would send it (Origin set, optional session cookie). */
   const request = (path: string, init: { method?: string; body?: unknown; cookie?: string } = {}) =>

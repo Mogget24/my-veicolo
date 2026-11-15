@@ -3,9 +3,11 @@ import { HTTPException } from 'hono/http-exception'
 import { createNeonDb } from '@my-veicolo/db/client'
 import { authOptionsFromEnv, createAuth } from './auth'
 import type { AppEnv, Deps } from './context'
-import { requireEnv } from './env'
+import { lookupBudgetFromEnv, requireEnv } from './env'
+import { plateProviderFromEnv } from './plates/provider'
 import { adminRoutes } from './routes/admin'
 import { meRoutes } from './routes/me'
+import { passwordResetRoutes } from './routes/password-reset'
 import { pushRoutes } from './routes/push'
 import { vehicleRoutes } from './routes/vehicles'
 
@@ -26,6 +28,7 @@ export function createApp(getDeps: () => Deps) {
     .route('/vehicles', vehicleRoutes)
     .route('/admin', adminRoutes)
     .route('/push', pushRoutes)
+    .route('/password-reset', passwordResetRoutes)
 
   app.notFound((c) => c.json({ error: 'Risorsa non trovata' }, 404))
   app.onError((err, c) => {
@@ -43,7 +46,13 @@ let prodDeps: Deps | undefined
 function productionDeps(): Deps {
   if (!prodDeps) {
     const db = createNeonDb(requireEnv('DATABASE_URL'))
-    prodDeps = { db, auth: createAuth(db, authOptionsFromEnv()) }
+    const authOptions = authOptionsFromEnv()
+    prodDeps = {
+      db,
+      auth: createAuth(db, authOptions),
+      plates: plateProviderFromEnv(),
+      config: { appOrigin: authOptions.baseURL, lookupMonthlyBudgetEur: lookupBudgetFromEnv() },
+    }
   }
   return prodDeps
 }

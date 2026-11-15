@@ -13,6 +13,11 @@ const vehicleColumns = {
   model: vehicles.model,
   version: vehicles.version,
   fuel: vehicles.fuel,
+  vin: vehicles.vin,
+  engineCc: vehicles.engineCc,
+  powerKw: vehicles.powerKw,
+  euroClass: vehicles.euroClass,
+  color: vehicles.color,
   registrationDate: vehicles.registrationDate,
   notes: vehicles.notes,
 }

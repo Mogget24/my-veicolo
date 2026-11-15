@@ -23,6 +23,16 @@ export const signUpSchema = z
   })
 export type SignUpInput = z.infer<typeof signUpSchema>
 
+export const resetPasswordSchema = z
+  .object({
+    password: z.string().min(PASSWORD_MIN_LENGTH, `Almeno ${PASSWORD_MIN_LENGTH} caratteri`).max(128, 'Password troppo lunga'),
+    confirmPassword: z.string(),
+  })
+  .refine((v) => v.password === v.confirmPassword, {
+    message: 'Le password non coincidono',
+    path: ['confirmPassword'],
+  })
+
 /** Only same-app paths are allowed as post-login redirects (no open redirects). */
 export const safeRedirect = (value: unknown): string | undefined =>
   typeof value === 'string' && value.startsWith('/') && !value.startsWith('//') && !value.startsWith('/\\')
